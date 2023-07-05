@@ -5,11 +5,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 dotenv.config()
 
-import {HttpError, NotFoundException} from "@global/exception/Exceptions";
+import {HttpError, NotFoundException} from "@src/utils/exception/Exceptions";
 
-import controller from "@domain/IndexController";
-
-
+import controller from "@src/controller/IndexController";
 
 const app = express();
 app.use(express.json());

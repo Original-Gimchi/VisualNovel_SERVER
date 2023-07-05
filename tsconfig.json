@@ -18,9 +18,10 @@
     "baseUrl": "./",
     "paths": {
       "@src/*": ["src/*"],
-      "@database/*": ["src/database/*"],
-      "@domain/*": ["src/domain/*"],
-      "@global/*": ["src/global/*"],
+      "@controller/*": ["src/controller/*"],
+      "@middleware/*": ["src/middleware/*"],
+      "@utils/*": ["src/utils/*"],
+      "@service/*": ["src/service/*"],
     }
   },
   "exclude": ["node_modules"],
