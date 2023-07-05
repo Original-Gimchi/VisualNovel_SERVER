@@ -1,8 +1,8 @@
 import {User} from "@src/domain/user/User";
-import {InternalServerException, UnAuthorizedException} from "@utils/exception/Exceptions";
+import {UnAuthorizedException} from "@utils/exception/Exceptions";
 import {findUserByEmailNotNull} from "@utils/database/Reposiotory";
 import process from "process";
-import {sign} from "jsonwebtoken";
+import UserSignInDto from "@service/auth/SignInDto";
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");

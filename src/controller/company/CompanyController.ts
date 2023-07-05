@@ -1,11 +1,11 @@
+import type {Request, Response} from "express";
 import express from "express";
 import asyncify from "express-asyncify";
-import signIn from "@service/auth/Auth";
 import {saveCompany, showFitCompany, showOneCompany} from "@service/company/CompanyService";
 
 const router = asyncify(express.Router());
 
-router.post('/company', async (req, res) => {
+router.post('/company', async (req: Request, res: Response) => {
     return res.status(200).json(
         await saveCompany(
             req.body.companyName
@@ -13,7 +13,7 @@ router.post('/company', async (req, res) => {
     )
 })
 
-router.get('/fit', async (req, res) => {
+router.get('/fit', async (req: Request, res: Response) => {
     return res.status(200).json(
         await showFitCompany(
             String(req.query.keyword)
@@ -21,7 +21,7 @@ router.get('/fit', async (req, res) => {
     )
 })
 
-router.get('/:name', async (req, res) => {
+router.get('/:name', async (req: Request, res: Response) => {
     return res.status(200).json(
         await showOneCompany(
             req.body.companyName

@@ -1,4 +1,4 @@
-class UserSignInDto {
+export default class UserSignInDto {
     email!: string
     password!: string
 
