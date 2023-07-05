@@ -8,3 +8,5 @@ class UserSignUpDto {
 
     password!: string
 }
+
+export default UserSignUpDto

@@ -34,7 +34,7 @@ const GPTChatService = async (gPTChatServiceDto: GPTChatServiceDto) => {
         const companyInfo = companyInfoCrawling(gPTChatServiceDto.company)
 
         const response = await openai.createChatCompletion({
-            model: "gpt-4", messages: [
+            model: "gpt-3.5-turbo", messages: [
                 {role: "system", content: "너는 자기소개서를 깔끔하게 작성해주는 사람이야"},
                 {role: "system", content: companyInfo + "이거는 지원할 회사에 대한 정보야"},
                 {role: "system", content: gPTChatServiceDto.job + "이거는 지원할 직군이야"},

@@ -18,7 +18,6 @@ const AppDataSource = new DataSource({
 
 const DatabaseStart = () => {
     AppDataSource.initialize()
-        .then(() => {})
         .catch((error) => console.log(error))
 }
 

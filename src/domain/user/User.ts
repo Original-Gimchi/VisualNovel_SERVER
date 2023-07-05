@@ -1,4 +1,5 @@
 import {Entity, Column, PrimaryGeneratedColumn} from "typeorm"
+import UserSignUpDto from "@service/user/UserSignUpDto";
 
 @Entity()
 export class User {
@@ -17,7 +18,9 @@ export class User {
     @Column("varchar", {nullable: false})
     password!: string
 
-    constructor(dto:UserSignUpDto) {
+    constructor(dto: UserSignUpDto) {
+        if (!dto) return;
+
         this.belonging = dto.belonging
         this.email = dto.email
         this.nickName = dto.nickName

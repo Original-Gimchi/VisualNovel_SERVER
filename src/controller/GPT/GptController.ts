@@ -1,5 +1,6 @@
 import express from "express";
-const router = express.Router();
+import asyncify from "express-asyncify";
+const router = asyncify(express.Router());
 
 router.post('/', (req, res) => {
     return res.send('Hello World!')

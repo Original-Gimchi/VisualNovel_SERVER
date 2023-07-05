@@ -4,13 +4,14 @@ import type { ErrorRequestHandler, NextFunction, Request, Response } from "expre
 import cookieParser from "cookie-parser";
 import cors from "cors";
 dotenv.config()
+import asyncify from 'express-asyncify';
 
 import {HttpError, NotFoundException} from "@src/utils/exception/Exceptions";
 
 import controller from "@src/controller/IndexController";
 import {DatabaseStart} from "@utils/database/Database";
 
-const app = express();
+const app = asyncify(express());
 
 app.use(express.json());
 app.use(cookieParser());
