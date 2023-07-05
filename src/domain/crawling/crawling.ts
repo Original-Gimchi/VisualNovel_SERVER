@@ -1,24 +1,24 @@
 import * as console from "console";
-import {defaults} from "axios";
-
-const axios = require("axios");
-const cheerio = require("cheerio");
-
+import axios from "axios";
+import {WRTN_JWT} from "@utils/env/env";
 
 const companyInfoCrawling = async (companyName: string) => {
     try {
-        const injae: String = await axios.get('https://www.google.com/search?q=' + companyName + "인재상");
-        const culture: String = await axios.get('https://www.google.com/search?q=' + companyName + "문화").data;
+        const companyInfo = await axios.post('https://william.wow.wrtn.ai/generate/plugin/64a542460987203b57ef7418?platform=web&user=rlaghgus7530@gmail.com',{
+            "message": `${companyName} 회사의 인재상, 기업문화를 자세하게 10줄 정도로 적어줄래?`,
+            "reroll": false
+        },{
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${WRTN_JWT}`
+            },
+        });
+        const content = companyInfo.data.data.content;
 
-        console.log(injae)
-
-        return "asdf"
+        return {content}
     } catch (error) {
         console.error(error);
     }
 };
-
-companyInfoCrawling("카카오").then(()=>{
-})
 
 export default companyInfoCrawling

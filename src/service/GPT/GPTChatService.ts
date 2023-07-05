@@ -2,15 +2,15 @@ import {GPT_SECRET} from "@utils/env/env";
 import {InternalServerException} from "@utils/exception/Exceptions";
 import companyInfoCrawling from "@src/domain/crawling/crawling";
 
-const { Configuration, OpenAIApi } = require("openai");
+const {Configuration, OpenAIApi} = require("openai");
 
-interface QuestionDto{
+interface QuestionDto {
     quest: string,
     experience: string,
     max: number,
 }
 
-interface GPTChatServiceDto{
+interface GPTChatServiceDto {
     company: string,
     job: string,
     record: string,
@@ -18,13 +18,13 @@ interface GPTChatServiceDto{
     question: QuestionDto[],
 }
 
+const configuration = new Configuration({
+    apiKey: GPT_SECRET,
+});
+const openai = new OpenAIApi(configuration);
 const GPTChatService = async (gPTChatServiceDto: GPTChatServiceDto) => {
-    const configuration = new Configuration({
-        apiKey: GPT_SECRET,
-    });
-    try {
-        const openai = new OpenAIApi(configuration);
 
+    try {
         let questionString: string = "";
 
         for (const question of gPTChatServiceDto.question) {
@@ -49,5 +49,18 @@ const GPTChatService = async (gPTChatServiceDto: GPTChatServiceDto) => {
         throw new InternalServerException()
     }
 }
+const GPTChatService2 = async (question:string) => {
+    const response = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo", messages: [
+            {role: "system", content: "너는 웹 보고 요약 정리 해주는 사람이야"},
+            {role: "user", content: question + " 을 보고 요약 정리해줘"},
+        ],
+    });
 
-export default GPTChatService;
+    return response.data.choices[0].message;
+}
+
+export {
+    GPTChatService,
+    GPTChatService2
+};
