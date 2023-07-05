@@ -4,6 +4,7 @@ import companyInfoCrawling from "@src/domain/crawling/crawling";
 import CompanySaveDto from "@service/company/CompanySaveDto";
 import FitCompanyDto from "@service/company/FitCompanyDto";
 import * as console from "console";
+import JasoDto from "@service/jaso/JasoDto";
 
 const {Configuration, OpenAIApi} = require("openai");
 
@@ -189,9 +190,32 @@ SK텔레콤
     }
 }
 
+const updateJasoWithGPT = async (jaso: string) => {
+    const configuration = new Configuration({
+        apiKey: GPT_SECRET,
+    });
+    try {
+        const openai = new OpenAIApi(configuration);
+
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo", messages: [
+                {role: "system", content: "너는 자기소개서를 깔끔하게 정리해주는 사람이야"},
+                {role: "user", content: jaso + "이 자기소개서 글을 깔끔하게 정리해줘"},
+            ],
+        })
+
+        return response.data.choices[0];
+
+    } catch (error) {
+        console.error('Error calling ChatGPT API:', error);
+        throw new InternalServerException()
+    }
+}
+
 
 export {
     CreateJaso,
     CreateCompany,
     ShowFitCompany,
+    updateJasoWithGPT,
 };

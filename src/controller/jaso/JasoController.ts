@@ -1,7 +1,7 @@
 import type {Request, Response} from "express";
 import express from "express";
 import asyncify from "express-asyncify";
-import {deleteJaso, grantJaso, saveJaso, showJaso, updateJaso} from "@service/jaso/JasoService";
+import {autoUpdateJaso, deleteJaso, grantJaso, saveJaso, showJaso, updateJaso} from "@service/jaso/JasoService";
 import JasoDto from "@service/jaso/JasoDto";
 
 const router = asyncify(express.Router());
@@ -27,6 +27,17 @@ router.put('/update/:id', async (req: Request, res: Response) => {
         await updateJaso(
             Number(req.params.id),
             new JasoDto(title, oneLineIntroduce, jaso), req.user.id
+        )
+    )
+})
+
+router.put('/update/auto/:id', async (req: Request, res: Response) => {
+    const {jasoContent, jasoId,} = req.body;
+    return res.status(200).json(
+        await autoUpdateJaso(
+            jasoContent,
+            jasoId,
+            req.user.id
         )
     )
 })
