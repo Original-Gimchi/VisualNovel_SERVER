@@ -1,5 +1,3 @@
-import {Column} from "typeorm";
-
 class JasoDto {
 
     oneLineIntroduce!: string

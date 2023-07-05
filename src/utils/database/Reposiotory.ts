@@ -2,9 +2,11 @@ import {AppDataSource} from "@utils/database/Database";
 import {Jaso} from "@src/domain/jaso/Jaso";
 import {User} from "@src/domain/user/User";
 import {UnAuthorizedException} from "@utils/exception/Exceptions";
+import {Company} from "@src/domain/company/Company";
 
 const UserRepository = AppDataSource.getRepository(User)
 const JasoRepository = AppDataSource.getRepository(Jaso)
+const CompanyRepository = AppDataSource.getRepository(Company)
 
 
 const findUserByIdNotNull = async (id: number) => {
@@ -34,6 +36,7 @@ const findJasoByIdNotNull = async (id: number) => {
 export {
     UserRepository,
     JasoRepository,
+    CompanyRepository,
     findUserByIdNotNull,
     findUserByEmailNotNull,
     findJasoByUserId,
