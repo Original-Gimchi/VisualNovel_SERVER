@@ -8,5 +8,3 @@ export default class UserSignInDto {
         this.password = password;
     }
 }
-
-export default UserSignInDto

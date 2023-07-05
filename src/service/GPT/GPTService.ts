@@ -4,7 +4,6 @@ import companyInfoCrawling from "@src/domain/crawling/crawling";
 import CompanySaveDto from "@service/company/CompanySaveDto";
 import FitCompanyDto from "@service/company/FitCompanyDto";
 import * as console from "console";
-import JasoDto from "@service/jaso/JasoDto";
 
 const {Configuration, OpenAIApi} = require("openai");
 
@@ -204,7 +203,7 @@ const updateJasoWithGPT = async (jaso: string) => {
             ],
         })
 
-        return response.data.choices[0];
+        return response.data.choices[0].message.content;
 
     } catch (error) {
         console.error('Error calling ChatGPT API:', error);

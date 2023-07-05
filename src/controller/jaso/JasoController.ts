@@ -20,6 +20,14 @@ router.post('/save', async (req: Request, res: Response) => {
         )
     )
 })
+router.put('/update/auto/:id', async (req: Request, res: Response) => {
+    return res.status(200).json(
+        await autoUpdateJaso(
+            Number(req.params.id),
+            req.user.id
+        )
+    )
+})
 
 router.put('/update/:id', async (req: Request, res: Response) => {
     const {title, oneLineIntroduce, jaso} = req.body;
@@ -31,16 +39,6 @@ router.put('/update/:id', async (req: Request, res: Response) => {
     )
 })
 
-router.put('/update/auto/:id', async (req: Request, res: Response) => {
-    const {jasoContent, jasoId,} = req.body;
-    return res.status(200).json(
-        await autoUpdateJaso(
-            jasoContent,
-            jasoId,
-            req.user.id
-        )
-    )
-})
 
 router.delete('/delete/:id', async (req: Request, res: Response) => {
     return res.status(200).json(

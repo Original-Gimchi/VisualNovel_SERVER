@@ -3,9 +3,7 @@ import {Jaso} from "@src/domain/jaso/Jaso";
 import {findJasoByIdNotNull, findJasoByUserId, findUserByIdNotNull, JasoRepository} from "@utils/database/Reposiotory";
 import {ForbiddenException} from "@utils/exception/Exceptions";
 import {User} from "@src/domain/user/User";
-import jasoDto from "@service/jaso/JasoDto";
 import {updateJasoWithGPT} from "@service/GPT/GPTService";
-import * as stream from "stream";
 
 const saveJaso = async (jasoDto: JasoDto, userId: number) => {
     const jaso = new Jaso(jasoDto, userId)
@@ -53,11 +51,11 @@ const grantJaso = async (jasoId: number, userId: number, grantUserId: number) =>
     return "success"
 }
 
-const autoUpdateJaso = async (jasoContent: string, jasoId: number, userId: number) => {
+const autoUpdateJaso = async (jasoId: number, userId: number) => {
 
     const jaso = await findJasoByIdNotNull(jasoId)
 
-    const fixedJaso: string = await updateJasoWithGPT(jasoContent)
+    const fixedJaso: string = await updateJasoWithGPT(jaso.jaso)
 
     return updateJaso(jasoId, new JasoDto(jaso.title, jaso.oneLineIntroduce, fixedJaso), userId);
 }
