@@ -14,6 +14,8 @@ const SignUp = async (userDto: UserSignUpDto) => {
     user.password = await bcrypt.hash(userDto.password, process.env.SALT);
 
     await UserRepository.save(user)
+
+    return "success"
 }
 
 export default SignUp

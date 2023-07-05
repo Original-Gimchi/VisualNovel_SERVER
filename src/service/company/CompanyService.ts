@@ -3,15 +3,13 @@ import {CreateCompany, ShowFitCompany} from "@service/GPT/GPTService";
 import CompanySaveDto from "@service/company/CompanySaveDto";
 import {Company} from "@src/domain/company/Company";
 
-const bcrypt = require("bcrypt");
-
 
 const saveCompany = async (companyName: string) => {
     const dto: CompanySaveDto = await CreateCompany(companyName)
 
     const company: Company = new Company(dto, companyName);
-
-    return await CompanyRepository.save(company)
+    await CompanyRepository.save(company)
+    return company
 }
 
 const showOneCompany = async (companyName: string) => {
@@ -19,7 +17,6 @@ const showOneCompany = async (companyName: string) => {
 }
 
 const showFitCompany = async (keyword: string) => {
-
     return ShowFitCompany(keyword);
 }
 

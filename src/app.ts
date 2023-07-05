@@ -12,7 +12,6 @@ import controller from "@src/controller/IndexController";
 import {DatabaseStart} from "@utils/database/Database";
 import companyInfoCrawling from "@src/domain/crawling/crawling";
 import * as console from "console";
-import {GPTChatService2} from "@service/GPT/GPTChatService";
 
 const app = asyncify(express());
 
@@ -30,10 +29,6 @@ app.use(
 
 
 app.use('/api',controller);
-
-(async () => {
-    console.log(await companyInfoCrawling("네이버"))
-})()
 
 app.use((req:Request, res:Response, next:NextFunction) => {
         next(new NotFoundException())

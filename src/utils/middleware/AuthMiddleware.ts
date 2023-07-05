@@ -7,16 +7,12 @@ const {getConnection} = require("../models/connector");
 const {jwtSecret} = require("../config/env");
 
 const validateToken = async (req: Request, res: Response, next: NextFunction) => {
-    try {
         const token = req.headers.authorization
         const data = jwt.verify(token, jwtSecret)
 
         req.user = await findUserByIdNotNull(data.id)
 
         next()
-    } catch (err) {
-        return res.status(410).json(err)
-    }
 }
 
-module.exports = validateToken;
+export default validateToken;

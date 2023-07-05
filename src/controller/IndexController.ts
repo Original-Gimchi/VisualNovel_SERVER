@@ -1,10 +1,20 @@
 import express from "express";
-const router = express.Router();
+import asyncify from "express-asyncify";
 
-import GptController from "@controller/user/UserController";
+import AuthController from "@controller/auth/AuthController"
+import CompanyController from "@controller/company/CompanyController"
+import JasoController from "@controller/jaso/JasoController"
+import UserController from "@controller/user/UserController"
+import validateToken from "@utils/middleware/AuthMiddleware"
+
+const router = asyncify(express.Router());
 
 
-router.use('/gpt',GptController)
+
+router.use('/auth',AuthController)
+router.use('/company',CompanyController)
+router.use('/jaso',validateToken,JasoController)
+router.use('/user',UserController)
 
 
 export default router;
