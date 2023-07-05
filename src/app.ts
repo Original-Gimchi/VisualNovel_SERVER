@@ -8,10 +8,14 @@ dotenv.config()
 import {HttpError, NotFoundException} from "@src/utils/exception/Exceptions";
 
 import controller from "@src/controller/IndexController";
+import {DatabaseStart} from "@utils/database/Database";
 
 const app = express();
+
 app.use(express.json());
 app.use(cookieParser());
+
+DatabaseStart()
 
 app.use(
     cors({

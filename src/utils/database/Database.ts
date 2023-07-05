@@ -12,6 +12,7 @@ const AppDataSource = new DataSource({
     entities: [User],
     synchronize: true,
     logging: ["info","error"],
+    charset: "utf8mb4"
 })
 
 const DatabaseStart = () => {
