@@ -23,8 +23,7 @@ router.post('/save', async (req: Request, res: Response) => {
 router.put('/update/auto/:id', async (req: Request, res: Response) => {
     return res.status(200).json(
         await autoUpdateJaso(
-            Number(req.params.id),
-            req.user.id
+            req.body.content
         )
     )
 })

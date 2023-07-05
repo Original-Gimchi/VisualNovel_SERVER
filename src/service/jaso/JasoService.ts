@@ -51,13 +51,12 @@ const grantJaso = async (jasoId: number, userId: number, grantUserId: number) =>
     return "success"
 }
 
-const autoUpdateJaso = async (jasoId: number, userId: number) => {
+const autoUpdateJaso = async (content: string) => {
 
-    const jaso = await findJasoByIdNotNull(jasoId)
 
-    const fixedJaso: string = await updateJasoWithGPT(jaso.jaso)
+    const fixedJaso: string = await updateJasoWithGPT(content)
 
-    return updateJaso(jasoId, new JasoDto(jaso.title, jaso.oneLineIntroduce, fixedJaso), userId);
+    return fixedJaso
 }
 
 export {
