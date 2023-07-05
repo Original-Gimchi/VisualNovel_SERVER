@@ -1,11 +1,7 @@
-import {User} from "@src/domain/user/User";
-import {InternalServerException} from "@utils/exception/Exceptions";
-import {AppDataSource} from "@utils/database/Database";
-import UserSignUpDto from "@service/user/UserSignUpDto";
-import process from "process";
 import JasoDto from "@service/jaso/JasoDto";
 import {Jaso} from "@src/domain/jaso/Jaso";
 import {findJasoByIdNotNull, findJasoByUserId, JasoRepository} from "@utils/database/Reposiotory";
+import {ForbiddenException} from "@utils/exception/Exceptions";
 
 const bcrypt = require("bcrypt");
 
@@ -18,13 +14,19 @@ const showJaso = async (userId: number) => {
     return await findJasoByUserId(userId)
 }
 
-const updateJaso = async (jasoId: number, jasoDto: JasoDto) => {
+const updateJaso = async (jasoId: number, jasoDto: JasoDto, userId: number) => {
     const jaso: Jaso = await findJasoByIdNotNull(jasoId)
 
-    await JasoRepository.save(jaso);
+    if (jaso.userId != userId) throw new ForbiddenException()
+
+    return await JasoRepository.save(jaso);
 }
 
-const deleteJaso = async (jasoId: number) => {
+const deleteJaso = async (jasoId: number, userId: number) => {
+    const jaso: Jaso = await findJasoByIdNotNull(jasoId)
+
+    if (jaso.userId != userId) throw new ForbiddenException()
+
     return await JasoRepository.delete(jasoId)
 }
 
