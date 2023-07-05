@@ -3,21 +3,17 @@ import {InternalServerException} from "@utils/exception/Exceptions";
 import {AppDataSource} from "@utils/database/Database";
 import UserSignUpDto from "@service/user/UserSignUpDto";
 import process from "process";
+import {UserRepository} from "@utils/database/Reposiotory";
 
 const bcrypt = require("bcrypt");
 
 
 const signUp = async (userDto: UserSignUpDto) => {
-    try {
-        const user: User = new User(userDto);
+    const user: User = new User(userDto);
 
-        user.password = await bcrypt.hash(userDto.password, process.env.SALT);
+    user.password = await bcrypt.hash(userDto.password, process.env.SALT);
 
-        await AppDataSource.manager.save(user);
-    } catch (error) {
-        console.error('Error from saving user in DB:', error);
-        throw new InternalServerException()
-    }
+    await UserRepository.save(user)
 }
 
 export default signUp

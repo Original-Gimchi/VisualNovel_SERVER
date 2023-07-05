@@ -19,9 +19,23 @@ const findUserByEmailNotNull = async (email: string) => {
     })) ?? (() => { throw new UnAuthorizedException(); })();
 }
 
+const findJasoByUserId = async (userId: number) => {
+    return (await JasoRepository.find({
+        where: {
+            userId: userId
+        }
+    })) ?? (() => { throw new UnAuthorizedException(); })();
+}
+
+const findJasoByIdNotNull = async (id: number) => {
+    return (await JasoRepository.findOneBy({id})) ?? (() => { throw new UnAuthorizedException(); })();
+}
+
 export {
     UserRepository,
     JasoRepository,
     findUserByIdNotNull,
     findUserByEmailNotNull,
+    findJasoByUserId,
+    findJasoByIdNotNull,
 }
