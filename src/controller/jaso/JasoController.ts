@@ -3,6 +3,8 @@ import express from "express";
 import asyncify from "express-asyncify";
 import {autoUpdateJaso, deleteJaso, grantJaso, saveJaso, showJaso, updateJaso} from "@service/jaso/JasoService";
 import JasoDto from "@service/jaso/JasoDto";
+import GPTChatService from "@service/GPT/GPTChatService";
+import GPTChatServiceDto from "@service/GPT/GPTChatServiceDto";
 
 const router = asyncify(express.Router());
 
@@ -11,6 +13,18 @@ router.get('/show', async (req: Request, res: Response) => {
         await showJaso(req.user.id)
     )
 })
+
+router.post('/create', async (req: Request, res: Response) => {
+    const {company, job, skills, record, quest, experience, max} = req.body;
+    return res.status(200).json(
+        await GPTChatService(
+            new GPTChatServiceDto(
+                company, job, skills, record, quest, experience, max
+            )
+        )
+    )
+})
+
 
 router.post('/save', async (req: Request, res: Response) => {
     const {title, oneLineIntroduce, jaso} = req.body;
