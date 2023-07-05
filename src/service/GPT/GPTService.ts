@@ -182,7 +182,7 @@ SK텔레콤
             }
 
         }
-        return companies;
+        return {companies};
 
     } catch (error) {
         console.error('Error calling ChatGPT API:', error);
