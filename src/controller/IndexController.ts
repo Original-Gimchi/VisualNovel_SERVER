@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import GptController from "@src/controller/GPT/GptController";
+import GptController from "@controller/user/UserController";
 
 
 router.use('/gpt',GptController)

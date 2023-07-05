@@ -8,7 +8,7 @@ import {UserRepository} from "@utils/database/Reposiotory";
 const bcrypt = require("bcrypt");
 
 
-const signUp = async (userDto: UserSignUpDto) => {
+const SignUp = async (userDto: UserSignUpDto) => {
     const user: User = new User(userDto);
 
     user.password = await bcrypt.hash(userDto.password, process.env.SALT);
@@ -16,4 +16,4 @@ const signUp = async (userDto: UserSignUpDto) => {
     await UserRepository.save(user)
 }
 
-export default signUp
+export default SignUp
