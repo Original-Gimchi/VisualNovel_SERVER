@@ -12,7 +12,7 @@ export class Jaso {
     @Column("text", {nullable: false})
     jaso!: string
 
-    @Column("number")
+    @Column()
     userId!: number
 
     constructor(jasoDto: JasoDto, userId: number) {
