@@ -4,17 +4,18 @@ import companyInfoCrawling from "@src/domain/crawling/crawling";
 
 const { Configuration, OpenAIApi } = require("openai");
 
-interface Question{
+interface QuestionDto{
     quest: string,
     experience: string,
     max: number,
 }
+
 interface GPTChatServiceDto{
     company: string,
     job: string,
     record: string,
     skills: string,
-    question: Question[],
+    question: QuestionDto[],
 }
 
 const GPTChatService = async (gPTChatServiceDto: GPTChatServiceDto) => {

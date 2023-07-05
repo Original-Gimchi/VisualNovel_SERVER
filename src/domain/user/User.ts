@@ -9,11 +9,18 @@ export class User {
     belonging!: string
 
     @Column("varchar", {nullable: false, length: 32})
-    email!: String
+    email!: string
 
     @Column("varchar", {nullable: false, length: 32})
-    nickName!: String
+    nickName!: string
 
     @Column("varchar", {nullable: false})
-    password!: String
+    password!: string
+
+    constructor(dto:UserSignUpDto) {
+        this.belonging = dto.belonging
+        this.email = dto.email
+        this.nickName = dto.nickName
+        this.password = dto.password
+    }
 }

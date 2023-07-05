@@ -1,6 +1,7 @@
 import {DataSource} from "typeorm";
 import process from "process";
 import {User} from "@src/domain/user/User";
+import {Jaso} from "@src/domain/jaso/Jaso";
 require('dotenv').config()
 
 const AppDataSource = new DataSource({
@@ -9,7 +10,7 @@ const AppDataSource = new DataSource({
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_DATABASE,
-    entities: [User],
+    entities: [User, Jaso],
     synchronize: true,
     logging: ["info","error"],
     charset: "utf8mb4"
@@ -17,14 +18,7 @@ const AppDataSource = new DataSource({
 
 const DatabaseStart = () => {
     AppDataSource.initialize()
-        .then(() => {
-            const user = new User()
-            user.email = "jasoservicewillbeking@gmail.com";
-            user.belonging = "부산소프트웨어마이스터고";
-            user.nickName = "이창보킹갓제너럴";
-            user.password = "iu123hrfkodsasdkfasdjkfhasjkfhaskfhasdkjfas"
-            AppDataSource.manager.save(user)
-        })
+        .then(() => {})
         .catch((error) => console.log(error))
 }
 
