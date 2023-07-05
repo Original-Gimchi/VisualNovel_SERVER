@@ -25,7 +25,7 @@ const showOneCompany = async (companyName: string) => {
     return company
 }
 const showFitCompany = async (keyword: string) => {
-    return ShowFitCompany(keyword);
+    return await ShowFitCompany(keyword);
 }
 
 export {
