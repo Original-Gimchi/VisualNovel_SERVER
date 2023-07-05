@@ -2,6 +2,8 @@ import {DataSource} from "typeorm";
 import process from "process";
 import {User} from "@src/domain/user/User";
 import {Jaso} from "@src/domain/jaso/Jaso";
+import {Company} from "@src/domain/company/Company";
+
 require('dotenv').config()
 
 const AppDataSource = new DataSource({
@@ -10,9 +12,9 @@ const AppDataSource = new DataSource({
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_DATABASE,
-    entities: [User, Jaso],
+    entities: [User, Jaso, Company],
     synchronize: true,
-    logging: ["info","error"],
+    logging: ["info", "error"],
     charset: "utf8mb4"
 })
 

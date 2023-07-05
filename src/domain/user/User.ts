@@ -1,5 +1,6 @@
-import {Entity, Column, PrimaryGeneratedColumn} from "typeorm"
+import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm"
 import UserSignUpDto from "@service/user/UserSignUpDto";
+import {Jaso} from "@src/domain/jaso/Jaso";
 
 @Entity()
 export class User {
@@ -18,12 +19,14 @@ export class User {
     @Column("varchar", {nullable: false})
     password!: string
 
+    @ManyToMany(() => Jaso, jaso => jaso.Share_Users)
+    Shared_jaso?: Jaso[]
+
     constructor(dto: UserSignUpDto) {
         if (!dto) return;
 
         this.belonging = dto.belonging
         this.email = dto.email
         this.nickName = dto.nickName
-        this.password = dto.password
     }
 }

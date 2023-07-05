@@ -1,4 +1,4 @@
-const {GPT_SECRET, WRTN_JWT, JWT_SECRET} = process.env;
+const {GPT_SECRET, WRTN_JWT, JWT_SECRET, SALT} = process.env;
 
 if (!GPT_SECRET) {
     throw new Error("GPT_SECRET is not defined");
@@ -9,5 +9,6 @@ if (!JWT_SECRET) {
 export {
     GPT_SECRET,
     WRTN_JWT,
-    JWT_SECRET
+    JWT_SECRET,
+    SALT
 }

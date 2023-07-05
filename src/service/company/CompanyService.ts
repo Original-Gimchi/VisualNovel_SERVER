@@ -13,9 +13,17 @@ const saveCompany = async (companyName: string) => {
 }
 
 const showOneCompany = async (companyName: string) => {
-    return await CompanyRepository.findOneBy({companyName})
-}
+    let company: Company | null = await CompanyRepository.findOneBy({companyName})
 
+    if (!company) {
+        const companyDto: CompanySaveDto = await CreateCompany(companyName)
+        company = new Company(companyDto, companyName);
+        await CompanyRepository.save(company)
+
+    }
+
+    return company
+}
 const showFitCompany = async (keyword: string) => {
     return ShowFitCompany(keyword);
 }

@@ -1,9 +1,7 @@
 import {User} from "@src/domain/user/User";
-import {InternalServerException} from "@utils/exception/Exceptions";
-import {AppDataSource} from "@utils/database/Database";
 import UserSignUpDto from "@service/user/UserSignUpDto";
-import process from "process";
 import {UserRepository} from "@utils/database/Reposiotory";
+import {SALT} from "@utils/env/env";
 
 const bcrypt = require("bcrypt");
 
@@ -11,7 +9,7 @@ const bcrypt = require("bcrypt");
 const SignUp = async (userDto: UserSignUpDto) => {
     const user: User = new User(userDto);
 
-    user.password = await bcrypt.hash(userDto.password, process.env.SALT);
+    user.password = await bcrypt.hash(userDto.password, Number(SALT));
 
     await UserRepository.save(user)
 

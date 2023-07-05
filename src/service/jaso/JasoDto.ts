@@ -5,7 +5,8 @@ class JasoDto {
     jaso!: string
 
 
-    constructor(oneLineIntroduce: string, jaso: string) {
+    constructor(title: string, oneLineIntroduce: string, jaso: string) {
+        this.title = title;
         this.oneLineIntroduce = oneLineIntroduce;
         this.jaso = jaso;
     }

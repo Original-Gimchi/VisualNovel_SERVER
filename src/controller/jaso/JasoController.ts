@@ -1,7 +1,7 @@
 import type {Request, Response} from "express";
 import express from "express";
 import asyncify from "express-asyncify";
-import {deleteJaso, saveJaso, showJaso, updateJaso} from "@service/jaso/JasoService";
+import {deleteJaso, grantJaso, saveJaso, showJaso, updateJaso} from "@service/jaso/JasoService";
 import JasoDto from "@service/jaso/JasoDto";
 
 const router = asyncify(express.Router());
@@ -13,20 +13,20 @@ router.get('/show', async (req: Request, res: Response) => {
 })
 
 router.post('/save', async (req: Request, res: Response) => {
-    const {oneLineIntroduce, jaso} = req.body;
+    const {title, oneLineIntroduce, jaso} = req.body;
     return res.status(200).json(
         await saveJaso(
-            new JasoDto(oneLineIntroduce, jaso), req.user.id
+            new JasoDto(title, oneLineIntroduce, jaso), req.user.id
         )
     )
 })
 
 router.put('/update/:id', async (req: Request, res: Response) => {
-    const {oneLineIntroduce, jaso} = req.body;
+    const {title, oneLineIntroduce, jaso} = req.body;
     return res.status(200).json(
         await updateJaso(
             Number(req.params.id),
-            new JasoDto(oneLineIntroduce, jaso), req.user.id
+            new JasoDto(title, oneLineIntroduce, jaso), req.user.id
         )
     )
 })
@@ -36,6 +36,12 @@ router.delete('/delete/:id', async (req: Request, res: Response) => {
         await deleteJaso(
             Number(req.params.id), req.user.id
         )
+    )
+})
+router.post('/grant', async (req: Request, res: Response) => {
+    const {jasoId, grantUserId} = req.body;
+    return res.status(200).json(
+        await grantJaso(jasoId, req.user.id, grantUserId)
     )
 })
 

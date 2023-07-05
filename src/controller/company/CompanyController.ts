@@ -21,10 +21,10 @@ router.get('/fit', async (req: Request, res: Response) => {
     )
 })
 
-router.get('/:name', async (req: Request, res: Response) => {
+router.get('/find', async (req: Request, res: Response) => {
     return res.status(200).json(
         await showOneCompany(
-            req.body.companyName
+            <string>req.query.name
         )
     )
 })

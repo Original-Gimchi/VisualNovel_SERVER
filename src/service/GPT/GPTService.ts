@@ -2,19 +2,18 @@ import {GPT_SECRET} from "@utils/env/env";
 import {InternalServerException} from "@utils/exception/Exceptions";
 import companyInfoCrawling from "@src/domain/crawling/crawling";
 import CompanySaveDto from "@service/company/CompanySaveDto";
-import {data} from "cheerio/lib/api/attributes";
-import {Company} from "@src/domain/company/Company";
 import FitCompanyDto from "@service/company/FitCompanyDto";
+import * as console from "console";
 
-const { Configuration, OpenAIApi } = require("openai");
+const {Configuration, OpenAIApi} = require("openai");
 
-interface QuestionDto{
+interface QuestionDto {
     quest: string,
     experience: string,
     max: number,
 }
 
-interface GPTChatServiceDto{
+interface GPTChatServiceDto {
     company: string,
     job: string,
     record: string,
@@ -63,13 +62,53 @@ const CreateCompany = async (companyName: string) => {
 
         const response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo", messages: [
-                {role: "user", content: companyName + "라는 회사의 키워드를 공백으로 구분해서 줘."},
-                {role: "user", content: companyName + "라는 한국의 회사를 한 줄로 정리해줘."},
-                {role: "user", content: companyName + "라는 회사에 대해서 상세하게 설명해줘."},
-            ],
-        }).data;
+                {
+                    role: "system", content: `너는 회사에 대한 정보를 알려주는 사람이야
+[키워드]
+키워드
+[한줄 소개]
+한줄 소개
+[상세 소개]
+상세 소개
 
-        return new CompanySaveDto(response.choices[0], response.choices[1], response.choices[2]);
+형식으로 대답해
+`
+                },
+                {
+                    role: "assistant", content: `
+[키워드]
+유연근무제 높은연봉
+[한줄 소개]
+대한민국 최고의 it회사 카카오
+[상세 소개]
+카카오는 대한민국 최고의 it회사로 유명하다. 
+
+`
+                },
+                {role: "user", content: companyName + "라는 회사의 키워드, 한줄 소개, 상세 소개를 알려줘"},
+            ],
+        });
+
+        const text = response.data.choices[0].message.content
+
+        // 키워드 추출하기
+        const keyword = text.match(/(?<=^\[키워드]\n).*?(?=\n|$)/s)[0];
+        console.log(keyword);
+
+// 간략한 소개 추출하기
+        const shortDesc = text.match(/(?<=\[한줄 소개\]\n).*?(?=\n)/s);
+        console.log(shortDesc);
+
+// 상세 소개 추출하기
+        const longDesc = text.match(/(?<=\[상세 소개]\n).*?(?=$)/s)[0];
+        console.log(longDesc);
+
+        return new CompanySaveDto(
+            keyword,
+            shortDesc,
+            longDesc
+        );
+
 
     } catch (error) {
         console.error('Error calling ChatGPT API:', error);
@@ -86,15 +125,21 @@ const ShowFitCompany = async (keyword: string) => {
 
         let response = await openai.createChatCompletion({
             model: "gpt-3.5-turbo", messages: [
-                {role: "system", content: `당신은 회사를 추천해야 합니다. 
+                {
+                    role: "system", content: `당신은 회사를 추천해야 합니다. 
 [회사이름]
 회사이름
 [한줄 소개]
 한줄 소개
-라는 양식으로 회사를 추천해주세요.`},
-                {role: "user", content: "유연 근무제, 높은 월급, 스프링 부트라는 회사의 키워드로 5개의 한국회사를 출력하는데, 무조건 회사이름 : 한줄 소개의 형식으로 출력해줘."},
-                {role: "assistant", content:
-`[회사이름]
+라는 양식으로 회사를 추천해주세요.`
+                },
+                {
+                    role: "user",
+                    content: "유연 근무제, 높은 월급, 스프링 부트라는 회사의 키워드로 5개의 한국회사를 출력하는데, 무조건 회사이름 : 한줄 소개의 형식으로 출력해줘."
+                },
+                {
+                    role: "assistant", content:
+                        `[회사이름]
 카카오
 [한줄 소개]
 혁신적인 모바일 플랫폼과 다양한 서비스를 제공하는 IT 기업
@@ -114,21 +159,28 @@ LG전자
 SK텔레콤
 [한줄 소개]
 통신 서비스, 인터넷, 모바일 등 다양한 분야에서 선도적인 통신사
-`},
+`
+                },
                 {role: "user", content: keyword + "라는 회사의 키워드로 5개의 한국회사를 출력하는데, 무조건 회사이름 : 한줄 소개의 형식으로 출력해줘."},
             ],
-        }).data.choices[0] + "\n";
+        });
 
-        let match;
+        let text = response.data.choices[0].message.content + "\n"
         const companies: FitCompanyDto[] = [];
 
-        while((match = /\[회사이름]\n(.*?)\n\[한줄 소개]\n(.*?)\n/g.exec(response)) !== null) {
-            companies.push(new FitCompanyDto(
-                match[1],
-                match[2]
-            ));
-        }
+        for (let i = 0; i < 5; i++) {
+            const name = text.match(/(?<=^\[회사이름]\n).*?(?=\n|$)/s);
 
+            const shortDesc = text.match(/(?<=\[한줄 소개\]\n).*?(?=\n|$)/s);
+            if (shortDesc && name) {
+                companies.push(new FitCompanyDto(
+                    name[0],
+                    shortDesc[0]
+                ));
+                text = text.replace("[회사이름]\n" + name[0] + "\n[한줄 소개]\n" + shortDesc + "\n", "")
+            }
+
+        }
         return companies;
 
     } catch (error) {
