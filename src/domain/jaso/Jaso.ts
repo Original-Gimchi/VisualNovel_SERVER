@@ -7,6 +7,9 @@ export class Jaso {
     id!: number
 
     @Column("varchar", {nullable: false})
+    title!: string
+
+    @Column("varchar", {nullable: false})
     oneLineIntroduce!: string
 
     @Column("text", {nullable: false})
@@ -18,8 +21,10 @@ export class Jaso {
     constructor(jasoDto: JasoDto, userId: number) {
         if(!jasoDto) return;
 
+        this.title = jasoDto.title
         this.oneLineIntroduce = jasoDto.oneLineIntroduce
         this.jaso = jasoDto.jaso
+        this.userId = userId
     }
 
     updateJaso(jasoDto: JasoDto) {
