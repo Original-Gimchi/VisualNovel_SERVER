@@ -3,6 +3,7 @@ import process from "process";
 import {User} from "@src/domain/user/User";
 import {Jaso} from "@src/domain/jaso/Jaso";
 import {Company} from "@src/domain/company/Company";
+import {PORT} from "@utils/env/env";
 
 require('dotenv').config()
 
@@ -12,6 +13,7 @@ const AppDataSource = new DataSource({
     username: process.env.DATABASE_USERNAME,
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_DATABASE,
+    port: PORT,
     entities: [User, Jaso, Company],
     synchronize: true,
     logging: ["info", "error"],
